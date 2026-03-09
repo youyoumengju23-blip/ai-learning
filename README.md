@@ -1,5 +1,5 @@
 # ai-learning
-record my AI learning process记录我的人工智能学习过程  
+record my AI learning process  
 记录我的人工智能学习过程
 ## 我的目标
 - 学会使用ai例如Claude or gpt
