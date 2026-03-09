@@ -1,5 +1,5 @@
 # ai-learning
-record my ai learning process 
+record my ai learning process  
 记录我的人工智能学习过程
 ## 我的目标
 - 学会使用ai例如Claude or gpt
@@ -13,7 +13,7 @@ record my ai learning process
 - 学会了GitHub的2个小符号#代表文章的标题的意思，#一级标题##二级标题以此类推，-则是列表的意思。
 ### 3月9日的学习感悟
 - 我的学习路径是gpt5.4给我规划的，一步一步来傻瓜式的学习，我感觉很有趣
-- GitHub换行记得打2次空格
+- GitHub换行记得打2次空格  
   像这样
 ### 3月9日的问题
 - 我不知道我的符号用的是否正确，比如我今天用了三个三级标题分别是学了什么、感悟、问题是该依次用四级标题还是就是三级标题就好。-列表的使用是对的吗？
