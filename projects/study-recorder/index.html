@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>大学生学习记录器</title>
+  <style>
+    :root {
+      --bg: #f4fbf5;
+      --card: rgba(255, 255, 255, 0.88);
+      --card-strong: #ffffff;
+      --green: #6bbf7b;
+      --green-deep: #3f9d5d;
+      --green-soft: #dff5e4;
+      --blue: #70b7ff;
+      --blue-soft: #e8f4ff;
+      --text: #2f4f3a;
+      --muted: #6f8a77;
+      --border: #d9ecde;
+      --shadow: 0 12px 30px rgba(78, 136, 93, 0.12);
+      --danger: #ef6b6b;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+      background: linear-gradient(180deg, #eef9f0 0%, #f7fbff 100%);
+      color: var(--text);
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 28px 18px 40px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, rgba(107, 191, 123, 0.18), rgba(112, 183, 255, 0.18));
+      border: 1px solid rgba(255, 255, 255, 0.7);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      padding: 24px;
+      margin-bottom: 18px;
+      backdrop-filter: blur(10px);
+    }
+
+    .hero h1 {
+      margin: 0 0 10px;
+      font-size: 30px;
+      line-height: 1.2;
+    }
+
+    .hero p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1.3fr 0.9fr;
+      gap: 18px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 18px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(8px);
+    }
+
+    .card h2 {
+      margin: 0 0 14px;
+      font-size: 20px;
+    }
+
+    .sub {
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 14px;
+    }
+
+    .badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 12px 0 0;
+    }
+
+    .badge {
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: var(--green-soft);
+      color: var(--green-deep);
+      font-size: 13px;
+      border: 1px solid #cdebd4;
+    }
+
+    .badge.blue {
+      background: var(--blue-soft);
+      color: #3a7fbe;
+      border-color: #d9ecff;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .field {
+      margin-bottom: 14px;
+    }
+
+    label {
+      display: block;
+      font-size: 14px;
+      margin-bottom: 8px;
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    input[type="date"],
+    input[type="text"],
+    textarea,
+    select {
+      width: 100%;
+      border: 1px solid var(--border);
+      background: var(--card-strong);
+      border-radius: 14px;
+      padding: 12px 14px;
+      font-size: 15px;
+      outline: none;
+      transition: all 0.2s ease;
+      color: var(--text);
+    }
+
+    textarea {
+      min-height: 120px;
+      resize: vertical;
+      line-height: 1.7;
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+      border-color: #91d6a0;
+      box-shadow: 0 0 0 4px rgba(107, 191, 123, 0.12);
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    button {
+      border: none;
+      border-radius: 14px;
+      padding: 11px 16px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.15s ease, opacity 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      opacity: 0.96;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--green), #7ec8f8);
+      color: white;
+      box-shadow: 0 10px 20px rgba(90, 170, 122, 0.18);
+    }
+
+    .btn-secondary {
+      background: #eef8f0;
+      color: var(--green-deep);
+      border: 1px solid var(--border);
+    }
+
+    .btn-danger {
+      background: #fff1f1;
+      color: var(--danger);
+      border: 1px solid #ffd4d4;
+    }
+
+    .summary {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .mini {
+      border-radius: 18px;
+      padding: 14px;
+      background: linear-gradient(180deg, #ffffff, #f8fffb);
+      border: 1px solid var(--border);
+    }
+
+    .mini.blue {
+      background: linear-gradient(180deg, #ffffff, #f6fbff);
+      border-color: #d9ecff;
+    }
+
+    .mini .label {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .mini .value {
+      font-size: 22px;
+      font-weight: 700;
+    }
+
+    .timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-height: 620px;
+      overflow: auto;
+      padding-right: 2px;
+    }
+
+    .entry {
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 14px;
+      background: linear-gradient(180deg, #ffffff, #fbfffc);
+    }
+
+    .entry-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+
+    .entry-date {
+      font-weight: 700;
+      font-size: 15px;
+    }
+
+    .entry-title {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .entry-block {
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: #f8fff9;
+      border: 1px solid #e3f2e7;
+    }
+
+    .entry-block.blue {
+      background: #f5fbff;
+      border-color: #e0f0ff;
+    }
+
+    .entry-block h4 {
+      margin: 0 0 6px;
+      font-size: 14px;
+    }
+
+    .entry-block p {
+      margin: 0;
+      white-space: pre-wrap;
+      line-height: 1.7;
+      color: #395244;
+    }
+
+    .empty {
+      text-align: center;
+      color: var(--muted);
+      padding: 24px 12px;
+      border: 1px dashed var(--border);
+      border-radius: 18px;
+      background: rgba(255,255,255,0.65);
+    }
+
+    .top-tools {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .search-box {
+      display: flex;
+      gap: 10px;
+      width: 100%;
+    }
+
+    .note {
+      margin-top: 12px;
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .toast {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      background: rgba(53, 113, 74, 0.92);
+      color: #fff;
+      padding: 12px 16px;
+      border-radius: 14px;
+      box-shadow: 0 10px 24px rgba(0,0,0,0.16);
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(8px);
+      transition: all 0.22s ease;
+      z-index: 20;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 900px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .summary,
+      .row {
+        grid-template-columns: 1fr;
+      }
+
+      .hero h1 {
+        font-size: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <section class="hero">
+      <h1>大学生学习记录器</h1>
+      <p>记录今天学了什么，安排明天要学什么。所有内容会自动保存在当前浏览器本地，适合每天快速复盘和持续积累。</p>
+      <div class="badge-row">
+        <span class="badge">绿色小清新</span>
+        <span class="badge blue">本地保存</span>
+        <span class="badge">每日复盘</span>
+        <span class="badge blue">简单上手</span>
+      </div>
+    </section>
+
+    <div class="grid">
+      <section class="card">
+        <h2>今日记录</h2>
+        <div class="sub">填写今天学习内容和明日计划。支持按日期编辑，保存后会出现在右侧历史中。</div>
+
+        <div class="summary">
+          <div class="mini">
+            <div class="label">累计记录天数</div>
+            <div class="value" id="totalDays">0</div>
+          </div>
+          <div class="mini blue">
+            <div class="label">最近记录日期</div>
+            <div class="value" id="latestDate" style="font-size:16px;">暂无</div>
+          </div>
+          <div class="mini">
+            <div class="label">今天状态</div>
+            <div class="value" id="statusText" style="font-size:18px;">开始学习</div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="field">
+            <label for="entryDate">记录日期</label>
+            <input type="date" id="entryDate" />
+          </div>
+          <div class="field">
+            <label for="studyMood">今天学习状态</label>
+            <select id="studyMood">
+              <option value="状态不错">状态不错</option>
+              <option value="正常推进">正常推进</option>
+              <option value="有点累但完成了">有点累但完成了</option>
+              <option value="效率一般">效率一般</option>
+              <option value="需要调整">需要调整</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="todayLearned">今天学了什么</label>
+          <textarea id="todayLearned" placeholder="例如：看完高数第三章，整理了英语单词 40 个，完成了数据库实验一。"></textarea>
+        </div>
+
+        <div class="field">
+          <label for="todayGain">今天的收获 / 遇到的问题</label>
+          <textarea id="todayGain" placeholder="例如：弄懂了导数应用，但 SQL 多表查询还是不太熟，需要明天再练。"></textarea>
+        </div>
+
+        <div class="field">
+          <label for="tomorrowPlan">明天要学什么</label>
+          <textarea id="tomorrowPlan" placeholder="例如：复习高数第三章例题，背 30 个英语单词，继续完成数据库实验报告。"></textarea>
+        </div>
+
+        <div class="field">
+          <label for="keywords">关键词（可选）</label>
+          <input type="text" id="keywords" placeholder="例如：高数、英语、数据库、复盘" />
+        </div>
+
+        <div class="actions">
+          <button class="btn-primary" id="saveBtn">保存记录</button>
+          <button class="btn-secondary" id="newBtn">清空当前输入</button>
+          <button class="btn-secondary" id="exportBtn">导出 JSON 备份</button>
+          <button class="btn-danger" id="clearAllBtn">清空全部数据</button>
+        </div>
+
+        <div class="note">
+          提醒：这是单文件本地版，数据默认保存在当前浏览器中。换浏览器、清理浏览器缓存，或更换设备后，本地记录不会自动同步，所以建议偶尔点一次“导出 JSON 备份”。
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="top-tools">
+          <div>
+            <h2 style="margin:0 0 6px;">历史记录</h2>
+            <div class="sub" style="margin:0;">可以查看、搜索、回填修改以前的学习记录。</div>
+          </div>
+        </div>
+
+        <div class="search-box" style="margin-bottom:14px;">
+          <input type="text" id="searchInput" placeholder="搜索日期、学习内容、关键词" />
+          <button class="btn-secondary" id="todayQuickBtn">定位今天</button>
+        </div>
+
+        <div class="timeline" id="historyList"></div>
+      </section>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const STORAGE_KEY = 'study_recorder_entries_v1';
+
+    const entryDate = document.getElementById('entryDate');
+    const studyMood = document.getElementById('studyMood');
+    const todayLearned = document.getElementById('todayLearned');
+    const todayGain = document.getElementById('todayGain');
+    const tomorrowPlan = document.getElementById('tomorrowPlan');
+    const keywords = document.getElementById('keywords');
+    const totalDays = document.getElementById('totalDays');
+    const latestDate = document.getElementById('latestDate');
+    const statusText = document.getElementById('statusText');
+    const historyList = document.getElementById('historyList');
+    const searchInput = document.getElementById('searchInput');
+    const toast = document.getElementById('toast');
+
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add('show');
+      clearTimeout(showToast.timer);
+      showToast.timer = setTimeout(() => {
+        toast.classList.remove('show');
+      }, 1800);
+    }
+
+    function formatDate(date) {
+      const y = date.getFullYear();
+      const m = String(date.getMonth() + 1).padStart(2, '0');
+      const d = String(date.getDate()).padStart(2, '0');
+      return `${y}-${m}-${d}`;
+    }
+
+    function getTomorrow(dateStr) {
+      const d = new Date(dateStr + 'T00:00:00');
+      d.setDate(d.getDate() + 1);
+      return formatDate(d);
+    }
+
+    function safeParse(data) {
+      try {
+        const parsed = JSON.parse(data || '{}');
+        return parsed && typeof parsed === 'object' ? parsed : {};
+      } catch (e) {
+        return {};
+      }
+    }
+
+    function loadEntries() {
+      return safeParse(localStorage.getItem(STORAGE_KEY));
+    }
+
+    function saveEntries(entries) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+    }
+
+    function getSortedEntries(entries) {
+      return Object.values(entries).sort((a, b) => b.date.localeCompare(a.date));
+    }
+
+    function updateSummary(entries) {
+      const arr = getSortedEntries(entries);
+      totalDays.textContent = String(arr.length);
+      latestDate.textContent = arr.length ? arr[0].date : '暂无';
+
+      const today = formatDate(new Date());
+      if (entries[today]) {
+        statusText.textContent = entries[today].mood || '已记录';
+      } else {
+        statusText.textContent = '开始学习';
+      }
+    }
+
+    function collectFormData() {
+      const date = entryDate.value;
+      return {
+        date,
+        mood: studyMood.value.trim(),
+        todayLearned: todayLearned.value.trim(),
+        todayGain: todayGain.value.trim(),
+        tomorrowPlan: tomorrowPlan.value.trim(),
+        keywords: keywords.value.trim(),
+        updatedAt: new Date().toISOString()
+      };
+    }
+
+    function validateEntry(entry) {
+      if (!entry.date) {
+        showToast('请先选择日期');
+        return false;
+      }
+      if (!entry.todayLearned && !entry.todayGain && !entry.tomorrowPlan) {
+        showToast('至少填写一项学习内容');
+        return false;
+      }
+      return true;
+    }
+
+    function fillForm(entry) {
+      entryDate.value = entry.date || formatDate(new Date());
+      studyMood.value = entry.mood || '正常推进';
+      todayLearned.value = entry.todayLearned || '';
+      todayGain.value = entry.todayGain || '';
+      tomorrowPlan.value = entry.tomorrowPlan || '';
+      keywords.value = entry.keywords || '';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function clearForm(keepDate = true) {
+      const currentDate = entryDate.value || formatDate(new Date());
+      if (keepDate) {
+        entryDate.value = currentDate;
+      } else {
+        entryDate.value = formatDate(new Date());
+      }
+      studyMood.value = '正常推进';
+      todayLearned.value = '';
+      todayGain.value = '';
+      tomorrowPlan.value = '';
+      keywords.value = '';
+    }
+
+    function renderHistory(entries, keyword = '') {
+      const arr = getSortedEntries(entries);
+      const q = keyword.trim().toLowerCase();
+      const filtered = q
+        ? arr.filter(item => {
+            const text = [
+              item.date,
+              item.mood,
+              item.todayLearned,
+              item.todayGain,
+              item.tomorrowPlan,
+              item.keywords
+            ].join(' ').toLowerCase();
+            return text.includes(q);
+          })
+        : arr;
+
+      if (!filtered.length) {
+        historyList.innerHTML = `<div class="empty">${q ? '没有找到匹配记录' : '还没有记录，先写下今天的学习内容吧。'}</div>`;
+        return;
+      }
+
+      historyList.innerHTML = filtered.map(item => {
+        const nextDate = getTomorrow(item.date);
+        return `
+          <article class="entry">
+            <div class="entry-header">
+              <div>
+                <div class="entry-date">${item.date}</div>
+                <div class="entry-title">学习状态：${item.mood || '未填写'}</div>
+              </div>
+              <div class="actions" style="margin:0;">
+                <button class="btn-secondary" onclick="editEntry('${item.date}')">查看/编辑</button>
+                <button class="btn-danger" onclick="deleteEntry('${item.date}')">删除</button>
+              </div>
+            </div>
+
+            ${item.todayLearned ? `
+              <div class="entry-block">
+                <h4>今天学了什么</h4>
+                <p>${escapeHtml(item.todayLearned)}</p>
+              </div>` : ''}
+
+            ${item.todayGain ? `
+              <div class="entry-block blue">
+                <h4>收获 / 问题</h4>
+                <p>${escapeHtml(item.todayGain)}</p>
+              </div>` : ''}
+
+            ${item.tomorrowPlan ? `
+              <div class="entry-block">
+                <h4>${nextDate} 要学什么</h4>
+                <p>${escapeHtml(item.tomorrowPlan)}</p>
+              </div>` : ''}
+
+            ${item.keywords ? `
+              <div class="badge-row" style="margin-top:10px;">
+                ${item.keywords.split(/[,，\s]+/).filter(Boolean).map(tag => `<span class="badge blue">${escapeHtml(tag)}</span>`).join('')}
+              </div>` : ''}
+          </article>
+        `;
+      }).join('');
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function saveCurrentEntry() {
+      const entries = loadEntries();
+      const entry = collectFormData();
+      if (!validateEntry(entry)) return;
+
+      entries[entry.date] = entry;
+      saveEntries(entries);
+      updateSummary(entries);
+      renderHistory(entries, searchInput.value);
+      showToast('保存成功');
+    }
+
+    function deleteEntry(date) {
+      const entries = loadEntries();
+      if (!entries[date]) return;
+      const ok = confirm(`确定删除 ${date} 的学习记录吗？`);
+      if (!ok) return;
+      delete entries[date];
+      saveEntries(entries);
+      updateSummary(entries);
+      renderHistory(entries, searchInput.value);
+      if (entryDate.value === date) {
+        clearForm(false);
+      }
+      showToast('已删除');
+    }
+
+    function editEntry(date) {
+      const entries = loadEntries();
+      if (!entries[date]) return;
+      fillForm(entries[date]);
+      showToast('已载入该日期记录');
+    }
+
+    function exportData() {
+      const entries = loadEntries();
+      const blob = new Blob([JSON.stringify(entries, null, 2)], { type: 'application/json;charset=utf-8' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `学习记录备份_${formatDate(new Date())}.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(a.href);
+      showToast('已导出备份');
+    }
+
+    function initTodayReminder(entries) {
+      const today = formatDate(new Date());
+      const yesterday = formatDate(new Date(Date.now() - 86400000));
+
+      if (entries[today]) {
+        fillForm(entries[today]);
+        return;
+      }
+
+      entryDate.value = today;
+      if (entries[yesterday] && entries[yesterday].tomorrowPlan) {
+        tomorrowPlan.value = entries[yesterday].tomorrowPlan;
+        todayGain.placeholder = '可以记录今天的收获，或写下哪里还没弄懂。';
+        showToast('已为你带出昨天写的“明天计划”');
+      }
+    }
+
+    document.getElementById('saveBtn').addEventListener('click', saveCurrentEntry);
+
+    document.getElementById('newBtn').addEventListener('click', () => {
+      clearForm(true);
+      showToast('已清空当前输入');
+    });
+
+    document.getElementById('clearAllBtn').addEventListener('click', () => {
+      const ok = confirm('确定清空全部学习记录吗？此操作无法撤销。');
+      if (!ok) return;
+      localStorage.removeItem(STORAGE_KEY);
+      clearForm(false);
+      const entries = loadEntries();
+      updateSummary(entries);
+      renderHistory(entries);
+      showToast('已清空全部数据');
+    });
+
+    document.getElementById('exportBtn').addEventListener('click', exportData);
+
+    document.getElementById('todayQuickBtn').addEventListener('click', () => {
+      const today = formatDate(new Date());
+      const entries = loadEntries();
+      if (entries[today]) {
+        editEntry(today);
+      } else {
+        entryDate.value = today;
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        showToast('今天还没有记录');
+      }
+    });
+
+    searchInput.addEventListener('input', () => {
+      renderHistory(loadEntries(), searchInput.value);
+    });
+
+    entryDate.addEventListener('change', () => {
+      const entries = loadEntries();
+      const date = entryDate.value;
+      if (entries[date]) {
+        fillForm(entries[date]);
+      } else {
+        const currentDate = date;
+        clearForm(true);
+        entryDate.value = currentDate;
+      }
+    });
+
+    window.deleteEntry = deleteEntry;
+    window.editEntry = editEntry;
+
+    function init() {
+      const today = formatDate(new Date());
+      entryDate.value = today;
+      const entries = loadEntries();
+      updateSummary(entries);
+      renderHistory(entries);
+      initTodayReminder(entries);
+    }
+
+    init();
+  </script>
+</body>
+</html>
